@@ -1,6 +1,6 @@
 import java.sql.Date;
 
-public class article {
+public class Article {
 	
 	private int idArticle;
 	private String nom;
@@ -14,7 +14,7 @@ public class article {
 	private int id_vente;
 	private Date date_enregistreament;
 	
-	public article (int unIdArticle, String unNom, String uneDescription, String uneTaille, String uneCouleur, String unEtat, double unPrix, String unePhoto_url, int unIdBenevole, int unIdVente, Date uneDate_enregistrement) {
+	public Article (int unIdArticle, String unNom, String uneDescription, String uneTaille, String uneCouleur, String unEtat, double unPrix, String unePhoto_url, int unIdBenevole, int unIdVente, Date uneDate_enregistrement) {
 		this.idArticle = unIdArticle;
 		this.nom = unNom;
 		this.description = uneDescription;
@@ -26,8 +26,8 @@ public class article {
 		this.id_benevole = unIdBenevole;
 		this.id_vente = unIdVente;
 		this.date_enregistreament = uneDate_enregistrement;
-		
-		public getidArticle() {
+	}
+		public int getidArticle() {
 			return idArticle;
 		}
 
