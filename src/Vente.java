@@ -9,7 +9,7 @@ public class Vente {
 	private String statut;
 	
 	
-	public vente (int unIdVente, String unTitre, Date uneDate_vente, String uneDescription, String unStatut) {
+	public Vente (int unIdVente, String unTitre, Date uneDate_vente, String uneDescription, String unStatut) {
 		this.idVente = unIdVente;
 		this.titre = unTitre;
 		this.date_vente = uneDate_vente;
