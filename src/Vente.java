@@ -1,3 +1,5 @@
+import java.sql.Date;
+
 public class Vente {
 
 	private int idVente;
