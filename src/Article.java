@@ -13,6 +13,7 @@ public class Article {
 	private int id_benevole;
 	private int id_vente;
 	private Date date_enregistreament;
+	private int test;
 	
 	public Article (int unIdArticle, String unNom, String uneDescription, String uneTaille, String uneCouleur, String unEtat, double unPrix, String unePhoto_url, int unIdBenevole, int unIdVente, Date uneDate_enregistrement) {
 		this.idArticle = unIdArticle;
