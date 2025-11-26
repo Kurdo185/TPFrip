@@ -1,3 +1,5 @@
+import java.sql.Date;
+
 public class Article {
 	
 	private int idArticle;
@@ -12,7 +14,7 @@ public class Article {
 	private int id_vente;
 	private Date date_enregistreament;
 	
-	public article (int unIdArticle, String unNom, String uneDescription, String uneTaille, String uneCouleur, String unEtat, double unPrix, String unePhoto_url, int unIdBenevole, int unIdVente, Date uneDate_enregistrement) {
+	public Article (int unIdArticle, String unNom, String uneDescription, String uneTaille, String uneCouleur, String unEtat, double unPrix, String unePhoto_url, int unIdBenevole, int unIdVente, Date uneDate_enregistrement) {
 		this.idArticle = unIdArticle;
 		this.nom = unNom;
 		this.description = uneDescription;
