@@ -31,6 +31,6 @@ public class ModeleUtilisateur {
 
         } catch (SQLException e) {
             System.out.println("Erreur lors de la création du bénévole : " + e.getMessage());
-        }
+        } // je commente 
     }
 }
