@@ -1,3 +1,4 @@
+import java.util.Date;
 
 public class don {
 	
@@ -18,8 +19,5 @@ public class don {
         this.date_don = uneDate_don;
         this.idBenevole = unIdBenevole;
         this.date_enregistrement = uneDate_enregistrement;
-        
-        
-        
     }
 }

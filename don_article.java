@@ -1,4 +1,3 @@
-
 public class don_article {
 	
 	private int idDon;
