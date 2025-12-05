@@ -2,18 +2,21 @@ import java.sql.Date;
 
 public class Don {
 	
+	// Attributs
 	private int idDon;
 	private String nomDonneur;
 	private String emailDonneur;
 	private Date dateDon;
 	
+    // Constructeurs
 	public Don(int idDon, String nomDonneur, String emailDonneur, Date dateDon) {
 		this.idDon = idDon;
 		this.nomDonneur = nomDonneur;
 		this.emailDonneur = emailDonneur;
 		this.dateDon = dateDon;
 	}
-
+	
+    // Getteurs/Setteurs
 	public int getIdDon() {
 		return idDon;
 	}

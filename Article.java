@@ -1,7 +1,8 @@
-package fripouilles;
+
 
 public class Article {
-
+	
+	// Attributs
     private int idArticle;
     private String nom;
     private String description;
@@ -11,7 +12,8 @@ public class Article {
     private int idVente;
     private int idDon;
     private int idUtilisateur;
-
+    
+    // Constructeurs
     public Article(int idArticle, String nom, String description, double prix, String taille, int idCategorie, int idVente, int idDon, int idUtilisateur) {
         this.idArticle = idArticle;
         this.nom = nom;
@@ -23,7 +25,8 @@ public class Article {
         this.idDon = idDon;
         this.idUtilisateur = idUtilisateur;
     }
-
+    
+    // Getteurs/Setteurs
     public int getIdArticle() {
         return this.idArticle;
     }

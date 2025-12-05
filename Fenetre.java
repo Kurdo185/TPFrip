@@ -4,7 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Fenetre extends JFrame {
-
+	
+	// Attributs
     private Modele modele;
     private CardLayout cardLayout;
     private JPanel panelPrincipal;
@@ -24,7 +25,7 @@ public class Fenetre extends JFrame {
 
         modele = new Modele();
 
-        cardLayout = new CardLayout();
+        cardLayout = new CardLayout(); // à changer pour le changement de vue
         panelPrincipal = new JPanel(cardLayout);
 
         // Initialisation des vues

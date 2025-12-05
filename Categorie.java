@@ -1,15 +1,20 @@
+
+
 public class Categorie {
-    
+	
+	// Attributs
     private int idCategorie;
     private String nom;
     private String description;
-
+    
+    // Constructeurs
     public Categorie(int idCategorie, String nom, String description) {
         this.idCategorie = idCategorie;
         this.nom = nom;
         this.description = description;
     }
-
+    
+    // Getteurs/Setteurs
     public int getIdCategorie() {
         return this.idCategorie;
     }
