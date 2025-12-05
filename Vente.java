@@ -1,13 +1,15 @@
 import java.util.Date;
 
 public class Vente {
-    
+	
+	// Attributs
     private int idVente;
     private String titre;
     private Date dateVente;
     private String lieu;
     private String statut;
 
+    // Constructeurs
     public Vente(int idVente, String titre, Date dateVente, String lieu, String statut) {
         this.idVente = idVente;
         this.titre = titre;
@@ -16,6 +18,7 @@ public class Vente {
         this.statut = statut;
     }
 
+    // Getteurs/Setteurs
     public int getIdVente() {
         return this.idVente;
     }

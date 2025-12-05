@@ -21,7 +21,8 @@ public class Don {
 		this.emailDonneur = emailDonneur;
 		this.dateDon = dateDon;
 	}
-
+	
+    // Getteurs/Setteurs
 	public int getIdDon() {
 		return idDon;
 	}
@@ -58,4 +59,5 @@ public class Don {
 	public String toString() {
 		return nomDonneur + " (" + dateDon + ")";
 	}
+}	}
 }
