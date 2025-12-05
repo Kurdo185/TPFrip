@@ -10,7 +10,7 @@ public class Modele {
     public Modele() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            this.connexion = DriverManager.getConnection("jdbc:mysql://172.16.203.111/fripouilles?serverTimezone=UTC", "sio", "slam");
+            this.connexion = DriverManager.getConnection("jdbc:mysql://172.16.203.112/fripouilles?serverTimezone=UTC", "sio", "slam");
             System.out.println("Connexion réussie à la base Fripouilles");
         } catch (ClassNotFoundException e) {
             System.out.println("Driver manquant : " + e);

@@ -1,7 +1,9 @@
-package fripouilles;
 
 public class Article {
-
+	/**
+	 * @author sreyhan
+	 * 
+	 */
     private int idArticle;
     private String nom;
     private String description;

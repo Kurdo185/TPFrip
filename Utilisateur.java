@@ -1,5 +1,10 @@
+/**
+ * @author sreyhan
+ * Identifie l'utilisateur en fonction de ses données
+ */
 public class Utilisateur {
     
+    // Attributs
     private int idUtilisateur;
     private String login;
     private String role;
@@ -8,6 +13,7 @@ public class Utilisateur {
     private String email;
     private String telephone;
 
+    // Constructeur
     public Utilisateur(int idUtilisateur, String login, String role, String nom, String prenom, String email, String telephone) {
         this.idUtilisateur = idUtilisateur;
         this.login = login;
@@ -18,6 +24,8 @@ public class Utilisateur {
         this.telephone = telephone;
     }
 
+    
+    //GETTERS:SETTERS
     public int getIdUtilisateur() {
         return this.idUtilisateur;
     }

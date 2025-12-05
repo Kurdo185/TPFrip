@@ -1,12 +1,20 @@
 import java.sql.Date;
 
+/**
+ * @author sreyhan
+ * Classe don information 
+ * Le donneur fait le don on peut edit ses info perso
+ * 
+ */
 public class Don {
 	
+	// Attributs
 	private int idDon;
 	private String nomDonneur;
 	private String emailDonneur;
 	private Date dateDon;
 	
+	// Constructeur
 	public Don(int idDon, String nomDonneur, String emailDonneur, Date dateDon) {
 		this.idDon = idDon;
 		this.nomDonneur = nomDonneur;
