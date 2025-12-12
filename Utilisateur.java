@@ -1,23 +1,24 @@
-
 /**
+ * Représente un utilisateur de l'application Fripouilles.
+ * Peut être un Maire, une Secrétaire ou un Bénévole.
  * @author sreyhan
- * Identifie l'utilisateur en fonction de ses données
  */
-
 public class Utilisateur {
 
-    
-    // Attributs
+    // --- Attributs ---
 
     private int idUtilisateur;
     private String login;
-    private String role;
+    private String role; // Valeurs possibles : "MAIRE", "SECRETAIRE", "BENEVOLE"
     private String nom;
     private String prenom;
     private String email;
     private String telephone;
 
-    public Utilisateur(int idUtilisateur, String login, String role, String nom, String prenom, String email, String telephone) {
+    // --- Constructeur ---
+
+    public Utilisateur(int idUtilisateur, String login, String role, String nom, 
+                       String prenom, String email, String telephone) {
         this.idUtilisateur = idUtilisateur;
         this.login = login;
         this.role = role;
@@ -27,8 +28,7 @@ public class Utilisateur {
         this.telephone = telephone;
     }
 
-    
-    // Getteurs/Setteurs
+    // --- Getters et Setters ---
 
     public int getIdUtilisateur() {
         return this.idUtilisateur;
@@ -84,5 +84,14 @@ public class Utilisateur {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    /**
+     * Affiche le nom, prénom et le rôle de l'utilisateur.
+     * Utile pour les logs ou l'affichage en haut de la fenêtre.
+     */
+    @Override
+    public String toString() {
+        return this.nom + " " + this.prenom + " (" + this.role + ")";
     }
 }

@@ -1,17 +1,19 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Fenêtre principale de l'application Fripouilles.
+ * Gestion de la navigation par suppression/ajout de panneaux (sans CardLayout).
+ * @author sreyhan
+ */
 public class Fenetre extends JFrame {
-	
-	// Attributs
+
+    // --- Attributs ---
     private Modele modele;
-    private CardLayout cardLayout;
-    private JPanel panelPrincipal;
     private Utilisateur utilisateurConnecte;
 
-    // Vues
+    // --- Vues (Panneaux) ---
     private VueAuth vueAuth;
     private VueSecretaire vueSecretaire;
     private VueBenevole vueBenevole;
@@ -20,105 +22,130 @@ public class Fenetre extends JFrame {
     public Fenetre() {
         setTitle("Fripouilles - Gestion Ventes Éphémères");
         setSize(1000, 700);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // Centre la fenêtre
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Instanciation du modèle
         modele = new Modele();
 
-        cardLayout = new CardLayout(); // à changer pour le changement de vue
-        panelPrincipal = new JPanel(cardLayout);
-
-        // Initialisation des vues
+        // Initialisation des différentes vues
         vueAuth = new VueAuth(modele, this);
         vueSecretaire = new VueSecretaire(modele);
         vueBenevole = new VueBenevole(modele);
         vueMaire = new VueMaire(modele);
 
-        // Ajout au panel
-        panelPrincipal.add(vueAuth, "AUTH");
-        panelPrincipal.add(vueSecretaire, "SECRETAIRE");
-        panelPrincipal.add(vueBenevole, "BENEVOLE");
-        panelPrincipal.add(vueMaire, "MAIRE");
-
-        add(panelPrincipal);
-        setVisible(true);
+        // On affiche la vue de connexion au démarrage
         changerVue("AUTH");
+        setVisible(true);
     }
 
+    /**
+     * Change la vue affichée en vidant la fenêtre et en ajoutant la nouvelle vue.
+     * Utilisation de if/else à la place de switch/break.
+     * @param nomVue Le nom de la vue à afficher
+     */
     public void changerVue(String nomVue) {
-        cardLayout.show(panelPrincipal, nomVue);
-        // Rafraichir les données au chargement de la vue
-        if (nomVue.equals("SECRETAIRE")) vueSecretaire.rafraichir();
-        if (nomVue.equals("BENEVOLE")) vueBenevole.rafraichir();
-        if (nomVue.equals("MAIRE")) vueMaire.rafraichir();
+        // 1. On vide le contenu actuel de la fenêtre
+        this.getContentPane().removeAll();
+
+        // 2. On choisit la nouvelle vue à afficher
+        if (nomVue.equals("AUTH")) {
+            this.add(vueAuth);
+        
+        } else if (nomVue.equals("SECRETAIRE")) {
+            this.add(vueSecretaire);
+            vueSecretaire.rafraichir(); // Mise à jour des données
+        
+        } else if (nomVue.equals("BENEVOLE")) {
+            this.add(vueBenevole);
+            vueBenevole.rafraichir();
+        
+        } else if (nomVue.equals("MAIRE")) {
+            this.add(vueMaire);
+            vueMaire.rafraichir();
+        }
+
+        // 3. IMPORTANT : On demande à la fenêtre de se redessiner
+        this.revalidate();
+        this.repaint();
     }
 
+    /**
+     * Gère la connexion de l'utilisateur et la redirection selon son rôle.
+     * @param u L'utilisateur authentifié
+     */
     public void setUtilisateurConnecte(Utilisateur u) {
         this.utilisateurConnecte = u;
-        // Redirection selon le rôle
-        if (u.getRole().equals("MAIRE")) {
-            menuMaire();
-            changerVue("MAIRE");
-        } else if (u.getRole().equals("SECRETAIRE")) {
-            menuSecretaire();
-            changerVue("SECRETAIRE");
-        } else if (u.getRole().equals("BENEVOLE")) {
-            // On passe l'user à la vue bénévole pour l'enregistrement
-            vueBenevole.setUtilisateur(u);
-            menuBenevole();
-            changerVue("BENEVOLE");
+        
+        if (u != null) {
+            String role = u.getRole();
+
+            // Redirection selon le rôle (Sans switch/break)
+            if (role.equals("MAIRE")) {
+                construireMenu("Menu Maire", "MAIRE");
+                changerVue("MAIRE");
+            
+            } else if (role.equals("SECRETAIRE")) {
+                construireMenu("Menu Secrétaire", "SECRETAIRE");
+                changerVue("SECRETAIRE");
+            
+            } else if (role.equals("BENEVOLE")) {
+                // Le bénévole doit être passé à sa vue pour l'enregistrement des articles
+                vueBenevole.setUtilisateur(u);
+                construireMenu("Menu Bénévole", "BENEVOLE");
+                changerVue("BENEVOLE");
+            
+            } else {
+                // Rôle inconnu ou erreur
+                System.out.println("Erreur : Rôle inconnu");
+                deconnexion();
+            }
         }
     }
 
-    private void menuMaire() {
+    /**
+     * Construit le menu supérieur adapté à la vue.
+     */
+    private void construireMenu(String titreMenu, String vueCible) {
         JMenuBar barre = new JMenuBar();
-        JMenu menu = new JMenu("Menu Maire");
-        JMenuItem item1 = new JMenuItem("Consulter Catalogue");
-        JMenuItem itemQ = new JMenuItem("Déconnexion");
+        JMenu menu = new JMenu(titreMenu);
         
-        item1.addActionListener(e -> changerVue("MAIRE"));
-        itemQ.addActionListener(e -> deconnexion());
+        JMenuItem itemPrincipal = new JMenuItem("Accueil");
+        JMenuItem itemQuitter = new JMenuItem("Déconnexion");
 
-        menu.add(item1);
-        menu.add(itemQ);
+        // Action pour retourner à l'accueil du rôle
+        itemPrincipal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changerVue(vueCible);
+            }
+        });
+
+        // Action pour se déconnecter
+        itemQuitter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deconnexion();
+            }
+        });
+
+        menu.add(itemPrincipal);
+        menu.addSeparator(); // Petite ligne de séparation
+        menu.add(itemQuitter);
+        
         barre.add(menu);
         setJMenuBar(barre);
+        
+        // Force l'affichage du menu
+        revalidate();
     }
 
-    private void menuSecretaire() {
-        JMenuBar barre = new JMenuBar();
-        JMenu menu = new JMenu("Menu Secrétaire");
-        JMenuItem item1 = new JMenuItem("Gérer les Ventes");
-        JMenuItem itemQ = new JMenuItem("Déconnexion");
-
-        item1.addActionListener(e -> changerVue("SECRETAIRE"));
-        itemQ.addActionListener(e -> deconnexion());
-
-        menu.add(item1);
-        menu.add(itemQ);
-        barre.add(menu);
-        setJMenuBar(barre);
-    }
-
-    private void menuBenevole() {
-        JMenuBar barre = new JMenuBar();
-        JMenu menu = new JMenu("Menu Bénévole");
-        JMenuItem item1 = new JMenuItem("Enregistrer Articles");
-        JMenuItem itemQ = new JMenuItem("Déconnexion");
-
-        item1.addActionListener(e -> changerVue("BENEVOLE"));
-        itemQ.addActionListener(e -> deconnexion());
-
-        menu.add(item1);
-        menu.add(itemQ);
-        barre.add(menu);
-        setJMenuBar(barre);
-    }
-
+    /**
+     * Déconnecte l'utilisateur et renvoie à l'écran de login.
+     */
     private void deconnexion() {
         utilisateurConnecte = null;
-        setJMenuBar(null);
+        setJMenuBar(null); // On enlève le menu
         changerVue("AUTH");
-        revalidate();
     }
 }

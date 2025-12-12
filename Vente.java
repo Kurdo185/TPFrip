@@ -1,15 +1,20 @@
-import java.util.Date;
+import java.sql.Date;
 
+/**
+ * Représente une vente éphémère
+ * Une vente possède un statut (ex: "EN_PREPARATION") qui définit si les bénévoles peuvent y ajouter des articles.
+ * @author sreyhan
+ */
 public class Vente {
-	
-	// Attributs
+    
+    // --- Attributs ---
     private int idVente;
     private String titre;
     private Date dateVente;
     private String lieu;
-    private String statut;
+    private String statut; // Ex: "EN_PREPARATION", "OUVERTE", "TERMINEE"
 
-    // Constructeurs
+    // --- Constructeur ---
     public Vente(int idVente, String titre, Date dateVente, String lieu, String statut) {
         this.idVente = idVente;
         this.titre = titre;
@@ -18,7 +23,8 @@ public class Vente {
         this.statut = statut;
     }
 
-    // Getteurs/Setteurs
+    // --- Getters et Setters ---
+    
     public int getIdVente() {
         return this.idVente;
     }
@@ -59,8 +65,12 @@ public class Vente {
         this.statut = statut;
     }
 
+    /**
+     * Affiche le titre et la date.
+     * Utile pour l'affichage dans les listes de l'interface graphique.
+     */
     @Override
     public String toString() {
-        return this.titre + " (" + this.lieu + ")";
+        return this.titre + " (le " + this.dateVente + ") - " + this.statut;
     }
 }

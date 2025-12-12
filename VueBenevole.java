@@ -4,98 +4,165 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * Vue destinée aux bénévoles.
+ * Permet d'enregistrer un don et les articles associés pour une vente spécifique.
+ * @author sreyhan
+ */
 public class VueBenevole extends JPanel implements ActionListener {
 
+    // --- Attributs ---
     private Modele modele;
-    private Utilisateur utilisateur;
+    private Utilisateur utilisateur; // L'utilisateur connecté (pour la traçabilité)
 
-    private JTextField txtNomArticle, txtPrix, txtTaille, txtDonneur;
+    // Composants du formulaire
+    private JTextField txtNomArticle;
+    private JTextField txtPrix;
+    private JTextField txtTaille;
+    private JTextField txtDonneur;
+    
     private JComboBox<Categorie> cbCategorie;
     private JComboBox<Vente> cbVente;
+    
     private JButton btnAjouter;
 
+    // --- Constructeur ---
     public VueBenevole(Modele modele) {
         this.modele = modele;
+        
+        // Organisation principale en BorderLayout
         setLayout(new BorderLayout());
 
-        JLabel lbl = new JLabel("Enregistrement Article & Don", SwingConstants.CENTER);
-        lbl.setFont(new Font("Arial", Font.BOLD, 18));
-        add(lbl, BorderLayout.NORTH);
+        // 1. Titre en haut
+        JLabel lblTitre = new JLabel("Enregistrement Article & Don", SwingConstants.CENTER);
+        lblTitre.setFont(new Font("Arial", Font.BOLD, 18));
+        add(lblTitre, BorderLayout.NORTH);
 
-        JPanel form = new JPanel(new GridLayout(7, 2, 10, 10));
-        form.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        // 2. Formulaire au centre (Grille de 6 lignes, 2 colonnes)
+        JPanel panelForm = new JPanel(new GridLayout(6, 2, 10, 10));
+        
+        // Marge autour du formulaire pour que ce soit plus joli
+        panelForm.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
-        form.add(new JLabel("Nom Donneur :"));
+        // Ajout des champs
+        panelForm.add(new JLabel("Nom du Donneur :"));
         txtDonneur = new JTextField();
-        form.add(txtDonneur);
+        panelForm.add(txtDonneur);
 
-        form.add(new JLabel("Vente concernée :"));
-        cbVente = new JComboBox<>();
-        form.add(cbVente);
+        panelForm.add(new JLabel("Vente concernée :"));
+        cbVente = new JComboBox<>(); // Sera rempli par la méthode rafraichir()
+        panelForm.add(cbVente);
 
-        form.add(new JLabel("Nom Article :"));
+        panelForm.add(new JLabel("Nom de l'article :"));
         txtNomArticle = new JTextField();
-        form.add(txtNomArticle);
+        panelForm.add(txtNomArticle);
 
-        form.add(new JLabel("Catégorie :"));
-        cbCategorie = new JComboBox<>();
-        form.add(cbCategorie);
+        panelForm.add(new JLabel("Catégorie :"));
+        cbCategorie = new JComboBox<>(); // Sera rempli par la méthode rafraichir()
+        panelForm.add(cbCategorie);
 
-        form.add(new JLabel("Taille :"));
+        panelForm.add(new JLabel("Taille :"));
         txtTaille = new JTextField();
-        form.add(txtTaille);
+        panelForm.add(txtTaille);
 
-        form.add(new JLabel("Prix :"));
+        panelForm.add(new JLabel("Prix de vente (€) :"));
         txtPrix = new JTextField();
-        form.add(txtPrix);
+        panelForm.add(txtPrix);
 
-        add(form, BorderLayout.CENTER);
+        add(panelForm, BorderLayout.CENTER);
 
-        btnAjouter = new JButton("Enregistrer");
+        // 3. Bouton en bas
+        btnAjouter = new JButton("Enregistrer l'article");
         btnAjouter.addActionListener(this);
-        add(btnAjouter, BorderLayout.SOUTH);
+        
+        // On met le bouton dans un petit panel pour qu'il ne prenne pas toute la largeur
+        JPanel panelBas = new JPanel();
+        panelBas.add(btnAjouter);
+        add(panelBas, BorderLayout.SOUTH);
     }
 
+    /**
+     * Stocke l'utilisateur connecté.
+     * Important : On a besoin de son ID pour savoir QUI a enregistré l'article dans la BDD.
+     */
     public void setUtilisateur(Utilisateur u) {
         this.utilisateur = u;
     }
 
+    /**
+     * Met à jour les listes déroulantes (Ventes et Catégories) depuis la base de données.
+     * Appelé par la Fenetre quand on arrive sur cette vue.
+     */
     public void rafraichir() {
-        // Charger les combos
+        // On vide les listes avant de les remplir pour éviter les doublons
         cbVente.removeAllItems();
-        ArrayList<Vente> lesVentes = modele.getLesVentes();
-        for (Vente v : lesVentes) cbVente.addItem(v);
-
         cbCategorie.removeAllItems();
+
+        // Chargement des ventes
+        ArrayList<Vente> lesVentes = modele.getLesVentes();
+        for (Vente v : lesVentes) {
+            cbVente.addItem(v);
+        }
+
+        // Chargement des catégories
         ArrayList<Categorie> lesCats = modele.getLesCategories();
-        for (Categorie c : lesCats) cbCategorie.addItem(c);
+        for (Categorie c : lesCats) {
+            cbCategorie.addItem(c);
+        }
     }
 
+    // --- Gestion des événements ---
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Vérification basique : est-ce que les champs sont remplis ?
+        if (txtDonneur.getText().isEmpty() || txtNomArticle.getText().isEmpty() || txtPrix.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Attention", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         try {
+            // Récupération des données du formulaire
             String donneur = txtDonneur.getText();
             String nomArt = txtNomArticle.getText();
             String taille = txtTaille.getText();
-            double prix = Double.parseDouble(txtPrix.getText());
+            
+            // Gestion du prix : on remplace la virgule par un point pour éviter le crash
+            String prixStr = txtPrix.getText().replace(",", ".");
+            double prix = Double.parseDouble(prixStr);
+
+            // Récupération des objets sélectionnés dans les listes
             Vente v = (Vente) cbVente.getSelectedItem();
             Categorie c = (Categorie) cbCategorie.getSelectedItem();
 
-            if (v == null || c == null) return;
+            // Sécurité : Si les listes sont vides
+            if (v == null || c == null) {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner une vente et une catégorie.");
+                return;
+            }
 
-            boolean ok = modele.ajouterArticleComplet(nomArt, prix, taille, c.getIdCategorie(), v.getIdVente(), utilisateur.getIdUtilisateur(), donneur);
+            // Appel au modèle pour l'insertion en base
+            boolean ok = modele.ajouterArticleComplet(
+                nomArt, 
+                prix, 
+                taille, 
+                c.getIdCategorie(), 
+                v.getIdVente(), 
+                utilisateur.getIdUtilisateur(), 
+                donneur
+            );
             
             if (ok) {
                 JOptionPane.showMessageDialog(this, "Article enregistré avec succès !");
+                // On vide les champs articles pour enchainer rapidement, mais on garde le donneur et la vente
                 txtNomArticle.setText("");
                 txtPrix.setText("");
                 txtTaille.setText("");
             } else {
-                JOptionPane.showMessageDialog(this, "Erreur lors de l'enregistrement.");
+                JOptionPane.showMessageDialog(this, "Erreur technique lors de l'enregistrement.", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Prix invalide");
+            JOptionPane.showMessageDialog(this, "Le prix doit être un nombre valide (ex: 5.50)", "Erreur Format", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

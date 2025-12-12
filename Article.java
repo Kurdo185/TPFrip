@@ -1,26 +1,28 @@
+import java.sql.Date;
 
+/**
+ * Représente un vêtement ou un objet mis en vente dans le projet Fripouilles.
+ * Cette classe fait le lien entre une vente, une catégorie, un don et l'utilisateur qui l'a saisi.
+ * @author sreyhan
+ */
 public class Article {
 
-	/**
-	 * @author sreyhan
-	 * 
-	 */
-
-	
-	// Attributs
-
+    // --- Attributs ---
     private int idArticle;
     private String nom;
     private String description;
     private double prix;
     private String taille;
+    
+    // Clés étrangères
     private int idCategorie;
     private int idVente;
     private int idDon;
-    private int idUtilisateur;
-    
-    // Constructeurs
-    public Article(int idArticle, String nom, String description, double prix, String taille, int idCategorie, int idVente, int idDon, int idUtilisateur) {
+    private int idUtilisateur; 
+
+    // --- Constructeur ---
+    public Article(int idArticle, String nom, String description, double prix, String taille, 
+                   int idCategorie, int idVente, int idDon, int idUtilisateur) {
         this.idArticle = idArticle;
         this.nom = nom;
         this.description = description;
@@ -31,82 +33,83 @@ public class Article {
         this.idDon = idDon;
         this.idUtilisateur = idUtilisateur;
     }
+
+    // --- Getters et Setters ---
     
-    // Getteurs/Setteurs
-    public int getIdArticle() {
-        return this.idArticle;
+    public int getIdArticle() { 
+        return this.idArticle; 
+    }
+    
+    public void setIdArticle(int idArticle) { 
+        this.idArticle = idArticle; 
     }
 
-    public void setIdArticle(int idArticle) {
-        this.idArticle = idArticle;
+    public String getNom() { 
+        return this.nom; 
+    }
+    
+    public void setNom(String nom) { 
+        this.nom = nom; 
     }
 
-    public String getNom() {
-        return this.nom;
+    public String getDescription() { 
+        return this.description; 
+    }
+    
+    public void setDescription(String description) { 
+        this.description = description; 
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public double getPrix() { 
+        return this.prix; 
+    }
+    
+    public void setPrix(double prix) { 
+        this.prix = prix; 
     }
 
-    public String getDescription() {
-        return this.description;
+    public String getTaille() { 
+        return this.taille; 
+    }
+    
+    public void setTaille(String taille) { 
+        this.taille = taille; 
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public int getIdCategorie() { 
+        return this.idCategorie; 
+    }
+    
+    public void setIdCategorie(int idCategorie) { 
+        this.idCategorie = idCategorie; 
     }
 
-    public double getPrix() {
-        return this.prix;
+    public int getIdVente() { 
+        return this.idVente; 
+    }
+    
+    public void setIdVente(int idVente) { 
+        this.idVente = idVente; 
     }
 
-    public void setPrix(double prix) {
-        this.prix = prix;
+    public int getIdDon() { 
+        return this.idDon; 
+    }
+    
+    public void setIdDon(int idDon) { 
+        this.idDon = idDon; 
     }
 
-    public String getTaille() {
-        return this.taille;
+    public int getIdUtilisateur() { 
+        return this.idUtilisateur; 
     }
-
-    public void setTaille(String taille) {
-        this.taille = taille;
-    }
-
-    public int getIdCategorie() {
-        return this.idCategorie;
-    }
-
-    public void setIdCategorie(int idCategorie) {
-        this.idCategorie = idCategorie;
-    }
-
-    public int getIdVente() {
-        return this.idVente;
-    }
-
-    public void setIdVente(int idVente) {
-        this.idVente = idVente;
-    }
-
-    public int getIdDon() {
-        return this.idDon;
-    }
-
-    public void setIdDon(int idDon) {
-        this.idDon = idDon;
-    }
-
-    public int getIdUtilisateur() {
-        return this.idUtilisateur;
-    }
-
-    public void setIdUtilisateur(int idUtilisateur) {
-        this.idUtilisateur = idUtilisateur;
+    
+    public void setIdUtilisateur(int idUtilisateur) { 
+        this.idUtilisateur = idUtilisateur; 
     }
 
     @Override
     public String toString() {
-        return this.nom + " (" + this.taille + ")";
+        return this.nom + " (" + this.taille + ") - " + this.prix + "€";
     }
 }
